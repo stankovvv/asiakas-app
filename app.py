@@ -73,7 +73,7 @@ def muokkaa_asiakas(id):
         return redirect(url_for('index'))
     cur.close()
     return render_template('form.html', asiakas=asiakas, action='Tallenna muutokset')
-
+#Varmistus ennen poistoa
 @app.route("/delete/<int:id>", methods=['GET', 'POST'])
 def poista_asiakas(id):
     cur = mysql.connection.cursor()
@@ -82,6 +82,7 @@ def poista_asiakas(id):
     if not asiakas:
         flash('Asiakasta ei löytynyt.', 'error')
         return redirect(url_for('index'))
+    #jos pyyntö on POST, suoritetaan poisto
     if request.method == 'POST':
         cur.execute("DELETE FROM ASIAKAS WHERE id = %s", (id,))
         mysql.connection.commit()
