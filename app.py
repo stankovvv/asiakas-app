@@ -45,18 +45,54 @@ def uusi_asikas():
         return redirect(url_for('index'))
     
     return render_template('form.html', asiakas=None, action='lisää')
+@app.route('/muokkaa/<int:id>', methods=['GET', 'POST'])
+def muokkaa_asiakas(id):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM ASIAKAS WHERE id = %s", (id,))
+    asiakas = cur.fetchone()
+    if not asiakas:
+        flash('Asiakasta ei löytynyt.', 'error')
+        return redirect(url_for('index'))
+    if request.method == 'POST':
+        etunimi = request.form['etunimi'].strip()
+        sukunimi = request.form['sukunimi'].strip()
+        email = request.form['sahkoposti'].strip()
+        puhelin = request.form['puhelin'].strip()
+        katuosoite = request.form['katuosoite'].strip()
+        postinumero = request.form['postinumero'].strip()
+        postinimipaikki = request.form['postinimipaikka'].strip()
+
+        cur.execute("""
+                    UPDATE ASIAKAS 
+                    SET etunimi=%s, sukunimi=%s, sahkoposti=%s, puhelin=%s, katuosoite=%s, postinumero=%s, postinimipaikka=%s
+                    WHERE id=%s
+                """, (etunimi, sukunimi, email, puhelin, katuosoite, postinumero, postinimipaikki, id))
+        mysql.connection.commit()
+        cur.close()
+        flash('Asiakas päivitetty onnistuneesti!', 'success')
+        return redirect(url_for('index'))
+    cur.close()
+    return render_template('form.html', asiakas=asiakas, action='Tallenna muutokset')
 
 @app.route("/delete/<int:id>", methods=['GET', 'POST'])
 def poista_asiakas(id):
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM ASIAKAS WHERE id = %s", (id,))
-    mysql.connection.commit()
-    cur.close()
+    cur.execute("SELECT * FROM ASIAKAS WHERE id = %s", (id,))
+    asiakas = cur.fetchone()
+    if not asiakas:
+        flash('Asiakasta ei löytynyt.', 'error')
+        return redirect(url_for('index'))
+    if request.method == 'POST':
+        cur.execute("DELETE FROM ASIAKAS WHERE id = %s", (id,))
+        mysql.connection.commit()
+        cur.close()
 
-    flash('Asiakas poistettu onnistuneesti!', 'success')
-    return redirect(url_for('index'))
-cur.close()
-return render_template('confirm_delete.html', asiakas=asiakas)
+        flash('Asiakas poistettu onnistuneesti!', 'success')
+        return redirect(url_for('index'))
+
+
+    cur.close()
+    return render_template('confirm_delete.html', asiakas=asiakas)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
