@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+    <form method="post"></form>
+        <label>Etunimi</label>
+        <input type="text" name="etunimi" value="{{ asiakas.etunimi if asiakas else '' }}" required>
+
+        <label>Sukunimi</label>
+        <input type="text" name="sukunimi" value="{{ asiakas.sukunimi if asiakas else '' }}" required>
+
+        <label>Sähköposti</label>
+        <input type="email" name="sahkoposti" value="{{ asiakas.sahkoposti if asiakas else '' }}">
+
+        <label>Puhelin</label>
+        <input type="text" name="puhelin" value="{{ asiakas.puhelin if asiakas else '' }}">
+
+        <label>Katuosoite</label>
+        <input type="text" name="katuosoite" value="{{ asiakas.katuosoite if asiakas else '' }}">
+
+        <label>Postinumero</label>
+        <input type="text" name="postinumero" value="{{ asiakas.postinumero if asiakas else '' }}">
+
+        <label>Postitoimipaikka</label>
+        <input type="text" name="postitoimipaikka" value="{{ asiakas.postitoimipaikka if asiakas else '' }}">
+
+        <button type="submit">{{action}}</button>
+        <a href="{{ url_for('index') }}">Peruuta</a> 
+    </form>
+{% endblock %}
