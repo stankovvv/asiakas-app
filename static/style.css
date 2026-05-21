@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    max-width: 1000px;
+    max-width: 95%;
+    margin: 30px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+}
+h1 {
+    margin-top: 0;
+}
+.actions {
+    margin-bottom: 20px;
+}
+
+.btn, button {
+    display: inline-block;
+    padding: 10px 16px;
+    background: #2563eb;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+    vertical-align: top;
+}
+th {
+    background: #f0f0f0;
+}
+form {
+    display: grid;
+    gap: 10px;
+    max-width: 600px;
+}
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+.flash {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+}
+.flash.success {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+.flash.error {
+    background: #f8d7da;
+    color: #842029;
+}
