@@ -136,7 +136,7 @@ def poista_asiakas(id):
 
     cur.close()
     return render_template('confirm_delete.html', asiakas=asiakas)
-
+#terveystarkistus endpoint
 @app.route('/health', methods=['GET'])
 def health_check():
     return "Service is running", 200
