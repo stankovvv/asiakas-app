@@ -13,13 +13,29 @@ app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
 app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 mysql = MySQL(app)
 # Routes
+
 @app.route('/')
 def index():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM ASIAKAS ORDER BY id DESC")
-    asiakkaat = cur.fetchall()
+    rows = cur.fetchall()
     cur.close()
+
+    asiakkaat = []
+    for row in rows:
+        asiakkaat.append({
+            "id": row[0],
+            "etunimi": row[1],
+            "sukunimi": row[2],
+            "sahkoposti": row[3],
+            "puhelin": row[4],
+            "katuosoite": row[5],
+            "postinumero": row[6],
+            "postitoimipaikka": row[7],
+        })
+
     return render_template('index.html', asiakkaat=asiakkaat)
+
 
 @app.route('/add', methods=['GET', 'POST'])
 def uusi_asiakas():
