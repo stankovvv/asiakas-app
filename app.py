@@ -51,8 +51,8 @@ def uusi_asiakas():
         #MySQL CONNECTION
         cur = mysql.connection.cursor()
         cur.execute("""
-                    INSERT INTO ASIAKAS 
-                    (etunimi, sukunimi, sahkoposti, puhelin, katuosoite, postinumero, postinimipaikka) 
+                INSERT INTO ASIAKAS 
+                (etunimi, sukunimi, sahkoposti, puhelin, katuosoite, postinumero, postitoimipaikka) 
             VALUES (%s, %s, %s, %s, %s, %s, %s)
         """, (etunimi, sukunimi, email, puhelin, katuosoite, postinumero, postitoimipaikka))
         mysql.connection.commit()
@@ -65,7 +65,20 @@ def uusi_asiakas():
 def muokkaa_asiakas(id):
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM ASIAKAS WHERE id = %s", (id,))
-    asiakas = cur.fetchone()
+    row = cur.fetchone()
+    if row:
+        asiakas = {
+            "id": row[0],
+            "etunimi": row[1],
+            "sukunimi": row[2],
+            "sahkoposti": row[3],
+            "puhelin": row[4],
+            "katuosoite": row[5],
+            "postinumero": row[6],
+            "postitoimipaikka": row[7],
+        }
+    else:
+        asiakas = None
     if not asiakas:
         flash('Asiakasta ei löytynyt.', 'error')
         return redirect(url_for('index'))
@@ -80,7 +93,7 @@ def muokkaa_asiakas(id):
 
         cur.execute("""
                     UPDATE ASIAKAS 
-                    SET etunimi=%s, sukunimi=%s, sahkoposti=%s, puhelin=%s, katuosoite=%s, postinumero=%s, postinimipaikka=%s
+                    SET etunimi=%s, sukunimi=%s, sahkoposti=%s, puhelin=%s, katuosoite=%s, postinumero=%s, postitoimipaikka=%s
                     WHERE id=%s
                 """, (etunimi, sukunimi, email, puhelin, katuosoite, postinumero, postitoimipaikka, id))
         mysql.connection.commit()
@@ -94,7 +107,20 @@ def muokkaa_asiakas(id):
 def poista_asiakas(id):
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM ASIAKAS WHERE id = %s", (id,))
-    asiakas = cur.fetchone()
+    row = cur.fetchone()
+    if row:
+        asiakas = {
+            "id": row[0],
+            "etunimi": row[1],
+            "sukunimi": row[2],
+            "sahkoposti": row[3],
+            "puhelin": row[4],
+            "katuosoite": row[5],
+            "postinumero": row[6],
+            "postitoimipaikka": row[7],
+        }
+    else:
+        asiakas = None
     if not asiakas:
         flash('Asiakasta ei löytynyt.', 'error')
         return redirect(url_for('index'))

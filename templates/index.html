@@ -22,17 +22,17 @@
     <tbody>
         {% for a in asiakkaat %}
         <tr>
-            <td>{{ a[0] }}</td>
-            <td>{{ a[1] }}</td>
-            <td>{{ a[2] }}</td>
-            <td>{{ a[3] }}</td>
-            <td>{{ a[4] }}</td>
-            <td>{{ a[5] }}</td>
-            <td>{{ a[6] }}</td>
-            <td>{{ a[7] }}</td>
+            <td>{{ a['id'] }}</td>
+            <td>{{ a['etunimi'] }}</td>
+            <td>{{ a['sukunimi'] }}</td>
+            <td>{{ a['sahkoposti'] }}</td>
+            <td>{{ a['puhelin'] }}</td>
+            <td>{{ a['katuosoite'] }}</td>
+            <td>{{ a['postinumero'] }}</td>
+            <td>{{ a['postitoimipaikka'] }}</td>
             <td>
-                <a href="{{ url_for('muokkaa_asiakas', id=a[0]) }}">Muokkaa</a> |
-                <a href="{{ url_for('poista_asiakas', id=a[0]) }}">Poista</a>
+                <a href="{{ url_for('muokkaa_asiakas', id=a['id']) }}">Muokkaa</a> |
+                <a href="{{ url_for('poista_asiakas', id=a['id']) }}">Poista</a>
             </td>
         </tr>
         {% else %}
