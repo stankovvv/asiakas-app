@@ -1,11 +1,45 @@
-<!DOCTYPE html>
-<html lang="fi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="actions">
+    <a class="btn" href="{{ url_for('uusi_asiakas') }}">+ Lisää uusi asiakas</a>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Etunimi</th>
+            <th>Sukunimi</th>
+            <th>Sähköposti</th>
+            <th>Puhelin</th>
+            <th>Osoite</th>
+            <th>Postinumero</th>
+            <th>Postitoimipaikka</th>
+            <th>Toiminnot</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in asiakkaat %}
+        <tr>
+            <td>{{ a.id }}</td>
+            <td>{{ a.etunimi }}</td>
+            <td>{{ a.sukunimi }}</td>
+            <td>{{ a.sahkoposti }}</td>
+            <td>{{ a.puhelin }}</td>
+            <td>{{ a.katuosoite }}</td>
+            <td>{{ a.postinumero }}</td>
+            <td>{{ a.postitoimipaikka }}</td>
+            <td>
+                <a href="{{ url_for('muokkaa_asiakas', id=a.id) }}">Muokkaa</a> |
+                <a href="{{ url_for('poista_asiakas', id=a.id) }}">Poista</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="9">Ei asiakkaita.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -17,12 +17,12 @@ mysql = MySQL(app)
 def index():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM ASIAKAS ORDER BY id DESC")
-    asiakkat = cur.fetchall()
+    asiakkaat = cur.fetchall()
     cur.close()
-    return render_template('index.html', asiakkat=asiakkat)
+    return render_template('index.html', asiakkaat=asiakkaat)
 
 @app.route('/add', methods=['GET', 'POST'])
-def uusi_asikas():
+def uusi_asiakas():
     if request.method == 'POST':
         etunimi = request.form['etunimi'].strip()
         sukunimi = request.form['sukunimi'].strip()
@@ -30,7 +30,7 @@ def uusi_asikas():
         puhelin = request.form['puhelin'].strip()
         katuosoite = request.form['katuosoite'].strip()
         postinumero = request.form['postinumero'].strip()
-        postinimipaikki = request.form['postinimipaikka'].strip()
+        postitoimipaikka = request.form['postitoimipaikka'].strip()
 
         #MySQL CONNECTION
         cur = mysql.connection.cursor()
@@ -38,7 +38,7 @@ def uusi_asikas():
                     INSERT INTO ASIAKAS 
                     (etunimi, sukunimi, sahkoposti, puhelin, katuosoite, postinumero, postinimipaikka) 
             VALUES (%s, %s, %s, %s, %s, %s, %s)
-        """, (etunimi, sukunimi, email, puhelin, katuosoite, postinumero, postinimipaikki))
+        """, (etunimi, sukunimi, email, puhelin, katuosoite, postinumero, postitoimipaikka))
         mysql.connection.commit()
         cur.close()
         flash('Asiakas lisätty onnistuneesti!', 'success')
@@ -60,13 +60,13 @@ def muokkaa_asiakas(id):
         puhelin = request.form['puhelin'].strip()
         katuosoite = request.form['katuosoite'].strip()
         postinumero = request.form['postinumero'].strip()
-        postinimipaikki = request.form['postinimipaikka'].strip()
+        postitoimipaikka = request.form['postitoimipaikka'].strip()
 
         cur.execute("""
                     UPDATE ASIAKAS 
                     SET etunimi=%s, sukunimi=%s, sahkoposti=%s, puhelin=%s, katuosoite=%s, postinumero=%s, postinimipaikka=%s
                     WHERE id=%s
-                """, (etunimi, sukunimi, email, puhelin, katuosoite, postinumero, postinimipaikki, id))
+                """, (etunimi, sukunimi, email, puhelin, katuosoite, postinumero, postitoimipaikka, id))
         mysql.connection.commit()
         cur.close()
         flash('Asiakas päivitetty onnistuneesti!', 'success')
