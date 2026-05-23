@@ -1,5 +1,6 @@
 #import stuff
 import os 
+import re
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
@@ -12,6 +13,19 @@ app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
 app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
 app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 mysql = MySQL(app)
+
+
+#validointi funktio
+def validate(form):
+    errors = []
+    if not form.get('etunimi', '').strip():
+        errors.append('Etunimi ei saa olla tyhjä.')
+    if not form.get('sukunimi', '').strip():
+        errors.append('Sukunimi ei saa olla tyhjä.')
+    email = form.get('sahkoposti', '').strip()
+    if email and not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        errors.append('Sähköpostiosoite ei kelpaa.')
+    return errors
 # Routes
 
 @app.route('/')
@@ -43,6 +57,11 @@ def uusi_asiakas():
         etunimi = request.form['etunimi'].strip()
         sukunimi = request.form['sukunimi'].strip()
         email = request.form['sahkoposti'].strip()
+        errors = validate(request.form)
+        if errors:
+            for error in errors:
+                flash(error, 'error')
+            return render_template('form.html', asiakas=None, action='lisää')
         puhelin = request.form['puhelin'].strip()
         katuosoite = request.form['katuosoite'].strip()
         postinumero = request.form['postinumero'].strip()
@@ -140,6 +159,8 @@ def poista_asiakas(id):
 @app.route('/health', methods=['GET'])
 def health_check():
     return "Service is running", 200
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
