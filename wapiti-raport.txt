@@ -1,0 +1,72 @@
+Wapiti vulnerability report
+Target: ${target}
+Date of the scan: ${scan_date}. Scope of the scan: ${scan_scope}. Crawled pages: ${crawled_pages_nbr}
+
+% if auth_dict != None:
+Authentication
+Url: ${auth_dict["url"]}
+Logged in: ${auth_dict["logged_in"]}
+% if auth_form_dict != None and len(auth_form_dict) > 0: Login field: ${auth_form_dict["login_field"]}
+Password field: ${auth_form_dict["password_field"]}
+% endif
+
+% endif
+Summary
+% for i, vuln_name in enumerate(vulnerabilities): % endfor % for i, anomaly_name in enumerate(anomalies): % endfor % for i, additional_name in enumerate(additionals): % endfor
+Category	Number of vulnerabilities found
+% if len(vulnerabilities[vuln_name]): ${vuln_name} % else: ${vuln_name} % endif	${len(vulnerabilities[vuln_name])}
+% if len(anomalies[anomaly_name]): ${anomaly_name} % else: ${anomaly_name} % endif	${len(anomalies[anomaly_name])}
+% if len(additionals[additional_name]): ${additional_name} % else: ${additional_name} % endif	${len(additionals[additional_name])}
+% for i, vuln_name in enumerate(vulnerabilities): % if len(vulnerabilities[vuln_name]):
+${vuln_name}
+Description
+${flaws[vuln_name]["desc"] | h}
+% for j, vulnerability in enumerate(vulnerabilities[vuln_name]):
+Vulnerability found in ${vulnerability["path"] | h}
+Description HTTP Request % if detailed_report is True and vulnerability["detail"]["response"] is not None: HTTP Response % endif cURL command line WSTG Code
+${vulnerability["info"] | h}
+% if detailed_report is True and vulnerability["detail"]["response"] is not None: % endif
+% endfor
+Solutions
+${flaws[vuln_name]["sol"]}
+References
+% for ref_name, ref_url in flaws[vuln_name]["ref"].items():
+${ref_name | h}
+% endfor
+
+% endif % endfor % for i, anomaly_name in enumerate(anomalies): % if len(anomalies[anomaly_name]):
+${anomaly_name}
+Description
+${flaws[anomaly_name]["desc"] | h}
+% for j, anomaly in enumerate(anomalies[anomaly_name]):
+Anomaly found in ${anomaly["path"] | h}
+Description HTTP Request % if detailed_report is True and anomaly["detail"]["response"] is not None: HTTP Response % endif cURL command line WSTG Code
+${anomaly["info"] | h}
+% if detailed_report is True and anomaly["detail"]["response"] is not None: % endif
+% endfor
+Solutions
+${flaws[anomaly_name]["sol"]}
+References
+% for ref_name, ref_url in flaws[anomaly_name]["ref"].items():
+${ref_name | h}
+% endfor
+
+% endif % endfor % for i, additional_name in enumerate(additionals): % if len(additionals[additional_name]):
+${additional_name}
+Description
+${flaws[additional_name]["desc"] | h}
+% for j, additional in enumerate(additionals[additional_name]):
+Additional found in ${additional["path"] | h}
+Description HTTP Request % if detailed_report is True and additional["detail"]["response"] is not None: HTTP Response % endif cURL command line WSTG Code
+${additional["info"] | h}
+% if detailed_report is True and additional["detail"]["response"] is not None: % endif
+% endfor
+Solutions
+${flaws[additional_name]["sol"]}
+References
+% for ref_name, ref_url in flaws[additional_name]["ref"].items():
+${ref_name | h}
+% endfor
+
+% endif % endfor
+${wapiti_version} © Nicolas SURRIBAS 2006-2026
